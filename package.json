@@ -1,0 +1,19 @@
+{
+	"name": "rest-api",
+	"version": "0.0.1-5",
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"express": "*",
+		"mongoose": "*",
+		"node-document-validator-jsonschema": "0.1.0",
+		"express-api-docs": "*",
+		"moment": "*",
+		"password-hash": "*"
+	},
+	"subdomain": "marcelooliveira-marker-service",
+	"engines": {
+		"node": "0.8.x"
+	}
+}
