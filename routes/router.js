@@ -163,12 +163,7 @@ var passwordHash = require('password-hash');
 			 					res.send(responseGen.failure(err))
 			 				else {
 			 					person.save();
-			 					resp = {
-			 						name : person.name;
-			 						email : person.email;
-			 						id : person.id;
-			 					};
-					 			res.send(responseGen.success(resp));
+			 					res.send(responseGen.success(responseGen.buildPersonResp(person)));
 					 		}
 					 	});
 			 		}
@@ -184,7 +179,7 @@ var passwordHash = require('password-hash');
 		var conditions = { "_id": _id }
   			, options = {};
   			modelBuilder.getPerson(function(model){
-		 	model.findById(_id, function (err, doc){
+		 	model.findById(_id, function (err, person){
 			if (err)
   			 	res.send(responseGen.failure("person not found"));
   			else{
@@ -194,12 +189,11 @@ var passwordHash = require('password-hash');
 					if (err)
 						res.send(responseGen.failure(err));
 					else {
-						model.findById(_id, function (err, doc){	
-							if (!doc)
+						model.findById(_id, function (err, person){	
+							if (!person)
 								res.send(responseGen.failure("list not found"));
 						    else {
-						    	doc.pass ="xxxx";
-						    	res.send(responseGen.success(doc));
+						    	res.send(responseGen.success(responseGen.buildPersonResp(person)));
 						    }
 						});
 					 }
@@ -215,14 +209,13 @@ var passwordHash = require('password-hash');
 			res.send(responseGen.failure("email and pass fields required"));
 
 		modelBuilder.getPerson(function(model){
-			model.findOne({email: req.body.email}, function (err, doc){
-			 		if (doc) {
-			 				isok = passwordHash.verify(req.body.pass, doc.pass);
+			model.findOne({email: req.body.email}, function (err, person){
+			 		if (person) {
+			 				isok = passwordHash.verify(req.body.pass, person.pass);
 			 				if (!isok)
 			 					res.send(responseGen.failure("invalid password"))
 			 				else {
-			 					doc.pass= "xxxx";
-			 					res.send(responseGen.success(doc));
+			 					res.send(responseGen.success(responseGen.buildPersonResp(person)));
 			 				}
 
 			 		}
@@ -236,7 +229,7 @@ var passwordHash = require('password-hash');
 	getPerson = function(req, res) {
 		modelBuilder.getPerson(function(model){
 		model.findOne({_id: req.params.id}, function(error, person) {
-			res.send(person);
+			res.send(responseGen.success(responseGen.buildPersonResp(person)));
 		});
 		});
 	};
