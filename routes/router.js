@@ -163,8 +163,12 @@ var passwordHash = require('password-hash');
 			 					res.send(responseGen.failure(err))
 			 				else {
 			 					person.save();
-			 					person.pass="xxxxx";
-					 			res.send(responseGen.success(person));
+			 					resp = {
+			 						name : person.name;
+			 						email : person.email;
+			 						id : person.id;
+			 					};
+					 			res.send(responseGen.success(resp));
 					 		}
 					 	});
 			 		}
@@ -230,8 +234,10 @@ var passwordHash = require('password-hash');
 
 	//Find person by ID
 	getPerson = function(req, res) {
-		Person.findOne({_id: req.params.id}, function(error, person) {
+		modelBuilder.getPerson(function(model){
+		model.findOne({_id: req.params.id}, function(error, person) {
 			res.send(person);
+		});
 		});
 	};
 

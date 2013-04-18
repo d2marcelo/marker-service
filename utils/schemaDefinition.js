@@ -14,7 +14,7 @@ exports.markerAddUpdateSchema = {
        required: true
     },
     order: {
-      type: "number",
+      type: "string",
       required: true
     },
     category: {
